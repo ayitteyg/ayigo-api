@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+{% extends 'root/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+<html lang="en">
+
+
+
+
+<body class="">
+  {% block content %}
+
+ <!--header for navbar-->
+ <header>
+  {% include 'root/navbar.html' %}
+ </header>
+
+
+ <!--page sections-->
+
+
+  <section class="container my-5">
+    
+    <div class="row">
+      <!-- First Column -->
+      <div class="col-md-6 col-12">
+        <div class="container-fluid">
+          <div class="p-4 rounded data-logo-div">
+            <img src="{% static 'images/rpt1.png' %}" alt="data-logo" class="data-logo">
+          </div>
+        </div>
+      </div>
+  
+      <!-- Second Column -->
+      <div class="col-md-6 col-12">
+        <div class="container-fluid ">
+          <div class="rounded">
+
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="bread-crumb-text" href="{% url 'homepage' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a class="bread-crumb-text-active" href="#">Product</a></li>
+              </ol>
+            </nav>
+
+            <div  class="form-container box-element">
+              <form method="post" id="product-form-id">
+                {% csrf_token %}
+                {{ form|crispy}}  <!-- Automatically applies Bootstrap styles -->
+                <button type="submit" class="btn btn-primary w-100 btn-txt">Submit</button>
+               </form>
+            </div>
+            
+          </div>
+        </div>
+    </div>
+  </section>
+  
+
+
+
+
+
+
+  {% comment %} <section>
+    <br><br><br><br>
+    <h1>Product List</h1>
+    <div id="product-list" class="product-grid">
+        <p>Loading products...</p>
+    </div>
+  </section> {% endcomment %}
+
+
+    
+{% endblock %}  
+</body>
+</html>
+

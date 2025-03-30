@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% extends 'root/base.html' %}
+{% load static %}
+<html lang="en">
+
+
+
+
+<body class="">
+  {% block content %}
+
+ <!--header for navbar-->
+ <header>
+  {% include 'root/navbar.html' %}
+ </header>
+
+
+ <!--page sections-->
+
+
+  <section class="container my-5">
+    <center>
+      
+      <div id="api-menu-head">
+        <h4>ayigo api</h4>
+      </div>
+    </center>
+   
+
+    <div class="row">
+      <!-- First Column -->
+      <div class="col-md-6 col-12">
+        <div class="container-fluid">
+          <div class="p-4 rounded data-logo-div">
+            <img src="{% static 'images/dshbd1.png' %}" alt="data-logo" class="data-logo">
+          </div>
+        </div>
+      </div>
+  
+      <!-- Second Column -->
+      <div class="col-md-6 col-12">
+        <div class="container-fluid">
+          <div class="p-4 rounded">
+            
+            <ul class="data-nav-list">
+              <li><a href="{% url 'products_form' %}">Products</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="services.html">Services</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+    </div>
+  </section>
+  
+
+
+
+
+
+
+  {% comment %} <section>
+    <br><br><br><br>
+    <h1>Product List</h1>
+    <div id="product-list" class="product-grid">
+        <p>Loading products...</p>
+    </div>
+  </section> {% endcomment %}
+
+
+    
+{% endblock %}  
+</body>
+</html>
+
