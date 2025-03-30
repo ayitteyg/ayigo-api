@@ -16,12 +16,16 @@ credentials_path = settings.GOOGLE_SERVICE_ACCOUNT_JSON
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 SERVICE_ACCOUNT_FILE = credentials_path
 
+# Load credentials from settings
+SCOPES = ["https://www.googleapis.com/auth/drive"]
+
 def get_drive_service():
     """Authenticate and return a Google Drive service instance."""
-    creds = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE, scopes=SCOPES
+    creds = service_account.Credentials.from_service_account_info(
+        settings.GOOGLE_SERVICE_ACCOUNT_JSON, scopes=SCOPES
     )
     return build("drive", "v3", credentials=creds)
+
 
 def get_or_create_folder(service, folder_name):
     """Get the folder ID if it exists, otherwise create it."""

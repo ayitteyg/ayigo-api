@@ -17,26 +17,41 @@ import dj_database_url
 import base64
 import json
 from google.oauth2 import service_account
+from dotenv import load_dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+load_dotenv()
 
 # Initialize environment variables
 env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 
 
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRETS_DIR = os.path.join(BASE_DIR, "secrets")  # Define the secrets directory
+# Load JSON from environment variable
+service_account_json_str = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON")
 
-GOOGLE_SERVICE_ACCOUNT_JSON = os.path.join(SECRETS_DIR, "ayigo_api_service_account.json")
+if service_account_json_str:
+    service_account_info = json.loads(service_account_json_str)  # Convert string to dict
+else:
+    raise ValueError("GOOGLE_SERVICE_ACCOUNT_JSON is not set in the environment variables.")
+
+# Store it as a dictionary
+GOOGLE_SERVICE_ACCOUNT_JSON = service_account_info
+
+print("GOOGLE_SERVICE_ACCOUNT_JSON Loaded Successfully")
 
 
-service_account_info = json.loads(os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON", "{}"))
-credentials = service_account.Credentials.from_service_account_info(service_account_info)
+# GOOGLE_SERVICE_ACCOUNT_JSON = service_account_info  # Store it as a dictionary
+
+# print("GOOGLE_SERVICE_ACCOUNT_JSON:", GOOGLE_SERVICE_ACCOUNT_JSON)
+
+
+
+
 
 
 # Quick-start development settings - unsuitable for production
