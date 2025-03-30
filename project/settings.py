@@ -15,6 +15,7 @@ import os
 import environ
 import dj_database_url
 import base64
+import json
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -35,11 +36,11 @@ GOOGLE_SERVICE_ACCOUNT_JSON = os.path.join(SECRETS_DIR, "ayigo_api_service_accou
 
 
 service_account_json = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON")
-service_account_path = os.getenv("SERVICE_ACCOUNT_PATH")
 
-if service_account_json and service_account_path:
-    with open(service_account_path, "w") as f:
-        f.write(base64.b64decode(service_account_json).decode("utf-8"))
+if service_account_json:
+    service_account_data = json.loads(base64.b64decode(service_account_json))
+else:
+    raise FileNotFoundError("Google service account credentials not found.")
 
 
 # Quick-start development settings - unsuitable for production
