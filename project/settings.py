@@ -35,8 +35,7 @@ SECRETS_DIR = os.path.join(BASE_DIR, "secrets")  # Define the secrets directory
 GOOGLE_SERVICE_ACCOUNT_JSON = os.path.join(SECRETS_DIR, "ayigo_api_service_account.json")
 
 
-
-service_account_info = json.loads(os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON"))
+service_account_info = json.loads(os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON", "{}"))
 credentials = service_account.Credentials.from_service_account_info(service_account_info)
 
 
