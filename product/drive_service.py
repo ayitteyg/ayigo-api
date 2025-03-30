@@ -10,7 +10,7 @@ from .functions import convert_decimal
 
 
 #loading credentials from settings
-credentials_path = settings.AYIGO_API_GOOGLE_SERVICE_ACCOUNT_JSON
+credentials_path = settings.GOOGLE_SERVICE_ACCOUNT_JSON
     
 
 SCOPES = ["https://www.googleapis.com/auth/drive"]

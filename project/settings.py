@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import environ
 import dj_database_url
+import base64
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,8 +31,15 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRETS_DIR = os.path.join(BASE_DIR, "secrets")  # Define the secrets directory
 
-AYIGO_API_GOOGLE_SERVICE_ACCOUNT_JSON = os.path.join(SECRETS_DIR, "ayigo_api_service_account.json")
+GOOGLE_SERVICE_ACCOUNT_JSON = os.path.join(SECRETS_DIR, "ayigo_api_service_account.json")
 
+
+service_account_json = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON")
+service_account_path = os.getenv("SERVICE_ACCOUNT_PATH")
+
+if service_account_json and service_account_path:
+    with open(service_account_path, "w") as f:
+        f.write(base64.b64decode(service_account_json).decode("utf-8"))
 
 
 # Quick-start development settings - unsuitable for production
