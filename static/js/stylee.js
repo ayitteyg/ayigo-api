@@ -12,7 +12,13 @@ function confirmFormSubmission(formId, message) {
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "Yes Submit",
-            cancelButtonText: "No"
+            cancelButtonText: "No",
+            customClass: {
+                title: 'swal-title',
+                content: 'swal-content',
+                confirmButton: 'swal-confirm-button',
+                cancelButton: 'swal-cancel-button'
+            }
         }).then((result) => {
             if (result.isConfirmed) {
                 this.submit(); // Submit the form if confirmed
