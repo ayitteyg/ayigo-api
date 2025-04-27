@@ -148,7 +148,13 @@ DATABASES = {
 #         'USER': os.getenv('DB_USER'),
 #         'PASSWORD': os.getenv('DB_PASSWORD'),
 #         'HOST': os.getenv('DB_HOST'),
-#         'PORT': os.getenv('DB_PORT', '5432'),  # Default PostgreSQL port
+#         'PORT': os.getenv('DB_PORT', '5432'),
+#         'OPTIONS': {
+#             'sslmode': 'verify-full',  # Stronger than 'require'
+#             'sslrootcert': os.path.join(BASE_DIR, 'prod-ca-2021.crt'),
+#             'connect_timeout': 10,
+#         },
+#         'CONN_MAX_AGE': 300,
 #     }
 # }
 
@@ -163,7 +169,10 @@ if 'DATABASE_URL' in os.environ:
         'HOST': db_url.hostname,
         'PORT': db_url.port or 5432,
         'OPTIONS': {
-            'sslmode': 'require',  # Force SSL (Neon requires this)
+            'sslmode': 'verify-full',  # Stronger than 'require'
+            # 'sslmode': 'require',  # Force SSL (Neon requires this)
+            'sslrootcert': os.path.join(BASE_DIR, 'prod-ca-2021.crt'),
+            'connect_timeout': 10,
         },
     }
 
