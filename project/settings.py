@@ -153,29 +153,29 @@ DATABASES = {
 # }
 
 # Alternative: Parse DATABASE_URL directly (if using a single env variable)
-# if 'DATABASE_URL' in os.environ:
-#     db_url = urlparse(os.getenv('DATABASE_URL'))
-#     DATABASES['default'] = {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': db_url.path[1:],  # Removes leading '/'
-#         'USER': db_url.username,
-#         'PASSWORD': db_url.password,
-#         'HOST': db_url.hostname,
-#         'PORT': db_url.port or 5432,
-#         'OPTIONS': {
-#             'sslmode': 'require',  # Force SSL (Neon requires this)
-#         },
-#     }
+if 'DATABASE_URL' in os.environ:
+    db_url = urlparse(os.getenv('DATABASE_URL'))
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': db_url.path[1:],  # Removes leading '/'
+        'USER': db_url.username,
+        'PASSWORD': db_url.password,
+        'HOST': db_url.hostname,
+        'PORT': db_url.port or 5432,
+        'OPTIONS': {
+            'sslmode': 'require',  # Force SSL (Neon requires this)
+        },
+    }
 
 
 
-DATABASES = {
-    'default': dj_database_url.config(
-        conn_max_age=600,
-        conn_health_checks=True,
-        # ssl_require=True,  # Critical for Render+Neon
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         conn_max_age=600,
+#         conn_health_checks=True,
+#         # ssl_require=True,  # Critical for Render+Neon
+#     )
+# }
 
 #debugging database ..
 print("Database Settings:", DATABASES['default'])
