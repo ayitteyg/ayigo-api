@@ -169,9 +169,7 @@ if 'DATABASE_URL' in os.environ:
         'HOST': db_url.hostname,
         'PORT': db_url.port or 5432,
         'OPTIONS': {
-            'sslmode': 'verify-full',  # Stronger than 'require'
-            # 'sslmode': 'require',  # Force SSL (Neon requires this)
-            'sslrootcert': os.path.join(BASE_DIR, 'prod-ca-2021.crt'),
+            # 'sslrootcert': os.path.join(BASE_DIR, 'prod-ca-2021.crt'),
             'connect_timeout': 10,
         },
     }
