@@ -4,11 +4,11 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views_api import ProductViewSet
-from .views import homepage_page_view, login_view, LogoutView, product_form_view
+from .views import homepage_page_view, login_view, LogoutView, ProductViewSet
 
 
 router = DefaultRouter()
-router.register(r'products', ProductViewSet)  # Plural is a better convention
+router.register(r'products', ProductViewSet, basename='product')
 
 
 #path() should not have "products/etc/etc" because the router handles that automatically.
@@ -20,5 +20,5 @@ urlpatterns = [
     
     
     # form display views
-    path('products_form', product_form_view, name='products_form'),
+    #path('products_form', product_form_view, name='products_form'),
 ]

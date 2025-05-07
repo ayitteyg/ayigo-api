@@ -8,17 +8,12 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
-from .forms import ProductForm
 from .drive_service import upload_json_to_drive
 from .models import Product
 
 
-
-
-
-# Create your views here.
-# def index(request):
-#     return HttpResponse("Hello, You're view is rendering..")
+from .functions import load_bulk_products
+#       load_bulk_products()
 
 
 
@@ -66,61 +61,42 @@ homepage_page_view = HomepageView.as_view()
 
 
 
+from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from .models import Product, Category
+from .serializers import ProductSerializer, ProductUpdateSerializer
 
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'slug'
 
-class ProductFormView(LoginRequiredMixin, FormView):
-    template_name = 'page/products_form.html'
-    form_class = ProductForm
-    login_url = 'login'  # Redirects to login page if not authenticated
-    success_url = '/'  # Redirect after successful form submission
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [permissions.IsAuthenticated()]
+        return []
 
-    def form_valid(self, form):
-        # Assign the logged-in user before saving
-        product = form.save(commit=False)
-        product.user = self.request.user
-        product.save()
-        return super().form_valid(form)
+    def get_serializer_class(self):
+        if self.action in ['update', 'partial_update']:
+            return ProductUpdateSerializer
+        return ProductSerializer
 
-product_form_view_0 = ProductFormView.as_view()
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
 
+    @action(detail=True, methods=['patch'])
+    def update_rating(self, request, slug=None):
+        product = self.get_object()
+        # Add custom rating update logic here
+        return Response(...)
 
-
-
-class ProductFormView(LoginRequiredMixin, FormView):
-    template_name = 'page/products_form.html'
-    form_class = ProductForm
-    login_url = 'login'  # Redirects to login page if not authenticated
-    success_url = '/'  # Redirect after successful form submission
-
-    def form_valid(self, form):
-        # Assign the logged-in user before saving
-        product = form.save(commit=False)
-        product.user = self.request.user
-        product.save()
-
-        # Fetch all products and update product.json in Google Drive
-        products = list(Product.objects.values())  # Convert QuerySet to list of dictionaries
-        upload_json_to_drive("product.json", products)  # Upload or update file in Drive
-
-        return super().form_valid(form)
-
-product_form_view = ProductFormView.as_view()
-
-
-
-
-class ProductFormView(LoginRequiredMixin, FormView):
-    template_name = 'page/products_form.html'
-    form_class = ProductForm
-    login_url = 'login'  # Redirects to login page if not authenticated
-    success_url = '/'  # Redirect after successful form submission
-
-    def form_valid(self, form):
-        # Assign the logged-in user before saving
-        product = form.save(commit=False)
-        product.user = self.request.user
-        product.save()
-
-product_form_view = ProductFormView.as_view()
-
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.created_by != request.user:
+            return Response(
+                {"detail": "You don't have permission to edit this product"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return super().update(request, *args, **kwargs)
 
